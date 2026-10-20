@@ -1,0 +1,27 @@
+services:
+  task6_service_1:
+    build:
+      context: .
+    image: task6
+    container_name: task6_1
+    environment:
+      - INSTANCE_ID=1
+    ports:
+      - 8001:8501
+    volumes:
+      - shared_volume:/app/data
+
+  task6_service_2:
+    build:
+      context: .
+    image: task6
+    container_name: task6_2
+    environment:
+      - INSTANCE_ID=2
+    ports:
+      - 8002:8501
+    volumes:
+      - shared_volume:/app/data
+
+volumes:
+  shared_volume:
