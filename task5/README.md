@@ -24,7 +24,7 @@ ENTRYPOINT ["python3", "-m", "main"].
 docker build -t task5_image -f Dockerfile_entrypoint .
 ```
 
-**Run the script in the contianer. No parameters are passed in.**
+**Run the script in the container. No parameters are passed in.**
 
 ```bash
 docker run -it --rm --name task5_c task5_image
@@ -32,7 +32,7 @@ docker run -it --rm --name task5_c task5_image
 No file names were passed.
 ```
 
-**Run the script in the contianer with file that doesn't exist in the container.**
+**Run the script in the container with file that doesn't exist in the container.**
 
 ```bash
 docker run -it --rm --name task5_c task5_image ./data/report1.csv
@@ -46,7 +46,7 @@ Explanation:
     The script exits with error because /app/data/report1.csv doesn't exist in the container.
 ```
 
-**Run the script in the contianer with file that exists on the host.**
+**Run the script in the container with file that exists on the host.**
 
 ```bash
 docker run -it --rm --name task5_c -v ./data/report1.csv:/app/data/report1.csv task5_image ./data/report1.csv
@@ -62,7 +62,7 @@ Month,Portfolio_Value_USD,Tech_Index_Points
 ```text
 Explanation: 
     1) The file ./data/report1.csv on the host is bound to the path /app/data/report1.csv in the container.
-    2) python3 -m main /app/data/report1.csv
+    2) The final command that runs in the container is python3 -m main /app/data/report1.csv
 ```
 
 ---
@@ -70,10 +70,10 @@ Explanation:
 ## Case 2. Dockerfile_cmd
 
 ```bash
-docker build -t task5_image -f Dockerfile_entrypoint .
+docker build -t task5_image -f Dockerfile_cmd .
 ```
 
-**Run the script in the contianer. No parameters are passed in.**
+**Run the script in the container. No parameters are passed in.**
 
 ```bash
 docker run -it --rm --name task5_c task5_image
@@ -81,7 +81,7 @@ docker run -it --rm --name task5_c task5_image
 No file names were passed.
 ```
 
-**Run the script in the contianer with file that doesn't exist in the container.**
+**Run the script in the container with file that doesn't exist in the container.**
 
 ```bash
 docker run -it --rm --name task5_c task5_image ./data/report1.csv
@@ -99,7 +99,7 @@ Explanation:
     The error indicates that ./data/report1.csv does not exist inside the container.
 ```
 
-**Run the script in the contianer with file that exists on the host.**
+**Run the script in the container with file that exists on the host.**
 
 ```bash
 docker run -it --rm --name task5_c -v ./data/report1.csv:/app/data/report1.csv task5_image ./data/report1.csv
@@ -111,6 +111,9 @@ exec ./data/report1.csv: exec format error
 Explanation: 
     The -v flag mounts ./data/report1.csv inside the container. 
     However, the error still occurs because Docker treats ./data/report1.csv as an executable command
+    for these reasons:
+        - The image has no ENTRYPOINT.
+        - The CMD instruction is overridden by the passed argument.
 ```
 
 **As before, but adding the --entrypoint flag.**
@@ -128,10 +131,9 @@ Month,Portfolio_Value_USD,Tech_Index_Points
 
 ```text
 Explanation: 
-    The --entrypoint flag sets python3 as the executable, 
-    receiving -m main ./data/report1.csv as parameters. 
-    Finally, command python3 -m main ./data/report1.csv is executed, 
-    using the host file mounted at ./data/report1.csv.
+    The --entrypoint flag sets python3 as the executable, the CMD instruction is overriden.
+    The final command that runs in the container is python3 -m main /app/data/report1.csv.
+    The /app/data/report1.csv is bound to ./data/report1.csv on the host.
 ```
 
 **Same as before, but overriding the CMD instruction.**
@@ -149,7 +151,7 @@ Month,Portfolio_Value_USD,Tech_Index_Points
 
 ```text
 Explanation: 
-    Parameters override instraction CMD.
-    Command python3 -m main ./data/report1.csv is executed, 
-    using the host file mounted at ./data/report1.csv.
+    The CMD instruction is overriden by the input parameters of docker run command.
+    The final command that runs in the container is python3 -m main /app/data/report1.csv.
+    The /app/data/report1.csv is bound to ./data/report1.csv on the host.
 ```

@@ -3,9 +3,8 @@
 ## Project Overview
 
 Hello App is a client-server applaiction.
-
-hello_server is a REST service. It defines an ednpoint GET / and returns "hello world" as response.
-hello_client is a REST client to hello_server. You can use hello_client to sent requests to hello_server.
+- hello_server is a REST service. It defines ednpoint GET / that returns "hello world" as response.
+- hello_client is a CLI utility and a REST client to hello_server. You can use hello_client to sent requests to hello_server.
 
 ---
 
@@ -37,7 +36,7 @@ hello_client is a REST client to hello_server. You can use hello_client to sent 
 
 ![](screenshots/04.%20docker%20run%20hello_server.jpg)
 
-2. Run hello_client in hello_network. 
+2. Run hello_client in hello_network to call endpoint GET / on hello_server.
 
 ![](screenshots/05.%20docker%20run%20client.jpg)
 
@@ -51,7 +50,7 @@ hello_client is a REST client to hello_server. You can use hello_client to sent 
 
 ![](screenshots/07.%20docker%20remove%20images.jpg)
 
-3. Remmove hello_network.
+3. Remove hello_network.
 
 ![](screenshots/08.%20docker%20remove%20network.jpg)
 
